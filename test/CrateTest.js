@@ -43,6 +43,29 @@ describe('Crate', function() {
     })
   })
 
+  it('should attach a buffer', function(done) {
+    var file = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+
+    createSchema(function(StubSchema) {
+      var model = new StubSchema()
+      model.attach('file', {
+        name: path.basename(file),
+        data: fs.readFileSync(file)
+      }, function (error) {
+        should(error).not.ok
+
+        model.file.type.should.equal('image/png')
+        model.file.name.should.equal('node_js_logo.png')
+        model.file.url.should.be.ok
+
+        // this can vary depending on file system...
+        model.file.size.should.be.greaterThan(17000)
+
+        done()
+      })
+    })
+  })
+
   it('should attach a file to an array', function(done) {
     var file = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
 
@@ -96,6 +119,19 @@ describe('Crate', function() {
       model.attach('file', {
         path: file
       }, function(error) {
+        error.should.be.ok
+
+        done()
+      })
+    })
+  })
+
+  it('should error when attachment name is missing and a buffer is attached', function(done) {
+    createSchema(function(StubSchema) {
+      var model = new StubSchema()
+      model.attach('file', {
+        data: []
+      }, function (error) {
         error.should.be.ok
 
         done()
