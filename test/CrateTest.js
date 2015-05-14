@@ -49,7 +49,7 @@ describe('Crate', function() {
     createSchema(function(StubSchema) {
       var model = new StubSchema()
       model.attach('file', {
-        name: path.basename(file),
+        path: 'node_js_logo.png',
         data: fs.readFileSync(file)
       }, function (error) {
         should(error).not.ok
