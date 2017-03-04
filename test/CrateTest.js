@@ -920,8 +920,8 @@ describe('Crate', () => {
     createSchema((StubSchema) => {
       const model = new StubSchema()
       model.attach('file', {
-        name: 'node_js_logo.png',
-        path: fs.readFileSync(file)
+        path: 'node_js_logo.png',
+        buffer: fs.readFileSync(file)
       }, (error) => {
         should(error).not.ok
 
@@ -943,30 +943,18 @@ describe('Crate', () => {
     createSchema((StubSchema) => {
       const model = new StubSchema()
       model.attach('file', {
-        name: 'node_js_logo.png',
-        path: fs.readFileSync(file),
+        path: 'node_js_logo.png',
+        buffer: fs.readFileSync(file),
         type: 'foo/bar',
+        name: 'hello',
         size: 5
       }, (error) => {
         should(error).not.ok
 
         model.file.type.should.equal('foo/bar')
-        model.file.name.should.equal('node_js_logo.png')
+        model.file.name.should.equal('hello')
         model.file.size.should.equal(5)
         model.file.url.should.be.ok
-
-        done()
-      })
-    })
-  })
-
-  it('should error when attachment name is missing and a buffer is attached', (done) => {
-    createSchema((StubSchema) => {
-      const model = new StubSchema()
-      model.attach('file', {
-        path: new Buffer([])
-      }, (error) => {
-        error.should.be.ok
 
         done()
       })

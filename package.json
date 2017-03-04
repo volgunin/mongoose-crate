@@ -42,7 +42,7 @@
     "standard": "^8.6.0"
   },
   "pre-commit": [
-    /*"test:coverage:check",*/
+    "test:coverage:check",
     "lint"
   ]
 }
